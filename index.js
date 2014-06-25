@@ -10,7 +10,7 @@ var createPool = function(settings){
     settings = {
         host: settings.host|| 'localhost',
         port: settings.port|| '27017',
-        db: settings.db|| 'airnb',
+        db: settings.db|| 'testDb',
         maxPoolSize : settings.maxPoolSize != null ? settings.maxPoolSize : 1,
         minPoolSize : settings.minPoolSize != null ? settings.minPoolSize : 0,
         idleTimeoutMillis: settings.idleTimeoutMillis|| 30000,
@@ -35,58 +35,82 @@ function MongoWrapper ( settings ){
     this.pool = createPool( settings );
 }
 
-MongoWrapper.prototype.acquire = function( cb ){
-    var self = this;
-    self.pool.acquire( function(err, db ){
-        var done = function( ){
-            self.pool.release( db );
-        };
-        return cb(err, db, done );
-    });
-};
 
 
-MongoWrapper.prototype.q = function( fn, cb){
-    var self = this;
-    async.waterfall([
-            function(cb){ return self.acquire(cb); },
-            function(db, done, cb){ 
-                return fn(db, function(err, doc){
-                    done();
-                    return cb(err, doc);
-                });
-            },
-            ], cb );
-};
-MongoWrapper.prototype.find = function(collection, data, cb){
-    var fn = function(db, cb){
-        async.waterfall([
-                function(cb){ return db.collection(collection).find( data, cb ); },
-                function(cur, cb){ return cur.toArray(cb); },
-                ], cb );
-    };
-    this.q(fn, cb);
-};
-
-var getFn = function( collection, data, method ){
-    return function(db, cb){
-        return db.collection(collection)[method](data, cb );
+var getFn = function(method){
+    return function(collection){
+        var self = this;
+        var args = [].slice.call(arguments, 1);
+        var origCb = args[ args.length -1 ];
+        this.pool.acquire(function(err, db){
+            if(err) return origCb(err);
+            var cb = function( ) {
+                self.pool.release(db);
+                return origCb.apply(origCb, arguments );
+            };
+            args[ args.length -1 ] = cb;
+            var coll = db.collection(collection);
+            coll[method].apply(coll, args );
+        });
     };
 };
+
 
 var mongoMethods = [
     'insert',
-    'save',
-    'findOne',
     'remove',
-    ];
+    'rename',
+    'save',
+    'update',
+    'distinct',
+    'count',
+    'drop',
+    'findAndModify',
+    'findAndRemove',
+    // 'find',
+    'findOne',
+    'createIndex',
+    'ensureIndex',
+    'indexInformation',
+    'dropIndex',
+    'dropAllIndexes',
+    'dropIndexes',
+    'reIndex',
+    'mapReduce',
+    'group',
+    'options',
+    'isCapped',
+    'indexExists',
+    'geoNear',
+    'geoHaystackSearch',
+    'indexes',
+    'aggregate',
+    'stats',
+    'hint'
+];
 
-mongoMethods.forEach(function(v){
-    MongoWrapper.prototype[v] = function(collection, data, cb){
-    this.q( getFn(collection, data, v), cb);
-    };
+mongoMethods.forEach( function(m){
+    MongoWrapper.prototype[m] = getFn(m);
 });
 
+
+MongoWrapper.prototype.find = function(collection){
+    var self = this;
+    var args = [].slice.call(arguments, 1);
+    var origCb = args.pop();
+    this.pool.acquire(function(err, db){
+        if(err) return origCb(err);
+        var cb = function( ) {
+            self.pool.release(db);
+            return origCb.apply(origCb, arguments );
+        };
+        var coll = db.collection(collection);
+        return async.waterfall([
+            function( cb){ args.push(cb); return  coll.find.apply(coll, args ); },
+            function( cursor, cb){ return  cursor.toArray( cb ); },
+            ], cb );
+    });
+}
 
 module.exports = MongoWrapper;
 

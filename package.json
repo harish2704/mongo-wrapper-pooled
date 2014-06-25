@@ -13,7 +13,7 @@
   "dependencies": {
     "mongodb": "*",
     "async": "*"
-  }
+  },
   "keywords": [
     "mongodb",
     "generic-pool",
