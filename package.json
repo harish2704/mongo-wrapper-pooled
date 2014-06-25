@@ -1,0 +1,23 @@
+{
+  "name": "mongo-wrapper-pooled",
+  "version": "0.0.0",
+  "description": "A wrapper library around mongodb with connection pooling using generic-pool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harish2704/mongo-wrapper-pooled"
+  },
+  "keywords": [
+    "mongodb",
+    "generic-pool",
+    "wrapper"
+  ],
+  "author": "Harish.K",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/harish2704/mongo-wrapper-pooled/issues"
+  }
+}
