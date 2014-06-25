@@ -10,14 +10,18 @@
     "type": "git",
     "url": "https://github.com/harish2704/mongo-wrapper-pooled"
   },
+  "dependencies": {
+    "mongodb": "*",
+    "async": "*"
+  }
   "keywords": [
     "mongodb",
     "generic-pool",
     "wrapper"
-  ],
-  "author": "Harish.K",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/harish2704/mongo-wrapper-pooled/issues"
-  }
+      ],
+    "author": "Harish.K",
+    "license": "BSD-2-Clause",
+    "bugs": {
+      "url": "https://github.com/harish2704/mongo-wrapper-pooled/issues"
+    }
 }
