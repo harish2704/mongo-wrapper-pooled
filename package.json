@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "mongodb": "*",
+    "generic-pool": "*",
     "async": "*"
   },
   "devDependencies": {
