@@ -15,7 +15,8 @@
     "async": "*"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "should": "*"
   },
   "keywords": [
     "mongodb",
