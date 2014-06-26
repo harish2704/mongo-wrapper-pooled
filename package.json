@@ -14,14 +14,17 @@
     "mongodb": "*",
     "async": "*"
   },
+  "devDependencies": {
+    "mocha": "*",
+  },
   "keywords": [
     "mongodb",
-    "generic-pool",
-    "wrapper"
-      ],
-    "author": "Harish.K",
-    "license": "BSD-2-Clause",
-    "bugs": {
-      "url": "https://github.com/harish2704/mongo-wrapper-pooled/issues"
-    }
+  "generic-pool",
+  "wrapper"
+    ],
+  "author": "Harish.K",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/harish2704/mongo-wrapper-pooled/issues"
+  }
 }
