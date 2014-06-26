@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/harish2704/mongo-wrapper-pooled.svg?branch=master)](https://travis-ci.org/harish2704/mongo-wrapper-pooled)
 mongo-wrapper-pooled
 ====================
 
