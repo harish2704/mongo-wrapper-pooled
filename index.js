@@ -67,7 +67,7 @@ var mongoMethods = [
     'drop',
     'findAndModify',
     'findAndRemove',
-    // 'find',
+    'find',
     'findOne',
     'createIndex',
     'ensureIndex',
@@ -94,23 +94,25 @@ mongoMethods.forEach( function(m){
 });
 
 
-MongoWrapper.prototype.find = function(collection){
-    var self = this;
-    var args = [].slice.call(arguments, 1);
-    var origCb = args.pop();
-    this.pool.acquire(function(err, db){
-        if(err) return origCb(err);
-        var cb = function( ) {
-            self.pool.release(db);
-            return origCb.apply(origCb, arguments );
-        };
-        var coll = db.collection(collection);
-        return async.waterfall([
-            function( cb){ args.push(cb); return  coll.find.apply(coll, args ); },
-            function( cursor, cb){ return  cursor.toArray( cb ); },
-            ], cb );
-    });
-}
+/*
+ * MongoWrapper.prototype.find = function(collection){
+ *     var self = this;
+ *     var args = [].slice.call(arguments, 1);
+ *     var origCb = args.pop();
+ *     this.pool.acquire(function(err, db){
+ *         if(err) return origCb(err);
+ *         var cb = function( ) {
+ *             self.pool.release(db);
+ *             return origCb.apply(origCb, arguments );
+ *         };
+ *         var coll = db.collection(collection);
+ *         return async.waterfall([
+ *             function( cb){ args.push(cb); return  coll.find.apply(coll, args ); },
+ *             function( cursor, cb){ return  cursor.toArray( cb ); },
+ *             ], cb );
+ *     });
+ * }
+ */
 
 module.exports = MongoWrapper;
 

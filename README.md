@@ -28,5 +28,3 @@ instance.findOne('collectionName', {userId: 'hari'}, { email: false}, console.lo
 ## Implemented methods 
 
 All methods available to a Mongodb Collection is implemented.
-For the convenience, the following methods do some more things
-* ```find```: It returns an array instead of a databse cursor. array is the result of cursor.toArray();
