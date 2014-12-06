@@ -22,6 +22,7 @@ var instance = new MongoWrapper( settings );
 
 instance.findOne('collectionName', {userId: 'hari'}, console.log );
 instance.findOne('collectionName', {userId: 'hari'}, { email: false}, console.log );
+instance.find('collectionName', {active: True, $limit:20}, { email: false}, console.log );
 // In general, instance.<CollectionMethod>( <CollectionName>, args... );
 ```
 
@@ -29,4 +30,4 @@ instance.findOne('collectionName', {userId: 'hari'}, { email: false}, console.lo
 
 All methods available to a Mongodb Collection is implemented.
 For the convenience, the following methods do some more things
-* ```find```: It returns an array instead of a databse cursor. array is the result of cursor.toArray();
+* ```find```: It returns an array instead of a databse cursor. array is the result of cursor.toArray(); If any of '$limit', '$sort', '$skip', '$fields' keys are present in the second argument, it is passed as argument to functions 'limit()', 'sort()', 'skip()', 'fields()' respectively before calling cursor.toArray().
