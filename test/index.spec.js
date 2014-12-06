@@ -1,3 +1,6 @@
+/*jslint node: true, stupid: true*/
+/*global describe, it, before, after */
+
 var should = require('should');
 
 var MongoWrapper = require('../index');
@@ -34,7 +37,9 @@ var implementedProps = [
   'stats',
   'hint' ];
 
-var mw = new MongoWrapper({});
+var mw = new MongoWrapper({
+    host: '127.0.0.1'
+});
 var COLL = 'tests';
 var data = require('./10.json');
 
